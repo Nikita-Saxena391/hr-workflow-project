@@ -1,24 +1,9 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { WorkflowNode, WorkflowNodeData } from '../../lib/workflow/types';
-import { 
-  Input, 
-  Button, 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardContent,
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  Textarea,
-  cn
-} from '@blinkdotnew/ui';
-import { Settings2, X } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { getAutomations } from '../../lib/workflow/mockApi';
+import { Settings2 } from 'lucide-react';
 
 interface PropertiesPanelProps {
   selectedNode: WorkflowNode | null;
@@ -50,9 +35,9 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <Settings2 size={18} />
           Properties
         </h3>
-        <Badge variant="secondary" className="text-[10px] uppercase">
+        <span className="px-2 py-0.5 rounded-full font-bold text-xs bg-primary text-primary-foreground">
           {selectedNode.data.type}
-        </Badge>
+        </span>
       </div>
 
       <div className="p-4 space-y-6">
@@ -103,15 +88,15 @@ const NodeForm: React.FC<NodeFormProps> = ({ node, onUpdate }) => {
   return (
     <form onChange={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-1">
-        <label className="text-xs font-semibold text-muted-foreground uppercase">Label</label>
-        <Input {...register('label')} placeholder="Node label" size="sm" />
+        <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Label</label>
+        <input {...register('label')} placeholder="Node label" className="w-full h-9 px-3 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent" />
       </div>
 
       {nodeType === 'start' && (
         <div className="space-y-4 pt-2 border-t">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Metadata Key</label>
-            <Input {...register('metadataKey')} placeholder="e.g. source_id" size="sm" />
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Metadata Key</label>
+            <input {...register('metadataKey')} placeholder="e.g. source_id" className="w-full h-9 px-3 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent" />
           </div>
         </div>
       )}
@@ -119,23 +104,23 @@ const NodeForm: React.FC<NodeFormProps> = ({ node, onUpdate }) => {
       {nodeType === 'task' && (
         <div className="space-y-4 pt-2 border-t">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Assignee</label>
-            <Input {...register('assignee')} placeholder="Email or Role" size="sm" />
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Assignee</label>
+            <input {...register('assignee')} placeholder="Email or Role" className="w-full h-9 px-3 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent" />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Description</label>
-            <Textarea {...register('description')} placeholder="Task instructions" rows={3} />
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Description</label>
+            <textarea {...register('description')} placeholder="Task instructions" rows={3} className="w-full px-3 py-2 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent resize-vertical" />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Due Date</label>
-            <Input {...register('dueDate')} type="date" size="sm" />
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Due Date</label>
+            <input {...register('dueDate')} type="date" className="w-full h-9 px-3 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent" />
           </div>
           
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Custom Fields (K-V)</label>
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Custom Fields (K-V)</label>
             <div className="grid grid-cols-2 gap-2">
-              <Input {...register('customFields.key1')} placeholder="Key" className="h-7 text-[10px]" />
-              <Input {...register('customFields.val1')} placeholder="Value" className="h-7 text-[10px]" />
+              <input {...register('customFields.key1')} placeholder="Key" className="h-7 px-2 text-[10px] border border-input bg-background rounded focus:ring-1" />
+              <input {...register('customFields.val1')} placeholder="Value" className="h-7 px-2 text-[10px] border border-input bg-background rounded focus:ring-1" />
             </div>
           </div>
         </div>
@@ -144,12 +129,12 @@ const NodeForm: React.FC<NodeFormProps> = ({ node, onUpdate }) => {
       {nodeType === 'approval' && (
         <div className="space-y-4 pt-2 border-t">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Approver Role</label>
-            <Input {...register('approverRole')} placeholder="e.g. Manager" size="sm" />
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Approver Role</label>
+            <input {...register('approverRole')} placeholder="e.g. Manager" className="w-full h-9 px-3 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent" />
           </div>
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Threshold (%)</label>
-            <Input {...register('threshold', { valueAsNumber: true })} type="number" min={0} max={100} size="sm" />
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Threshold (%)</label>
+            <input {...register('threshold', { valueAsNumber: true })} type="number" min={0} max={100} className="w-full h-9 px-3 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent" />
           </div>
         </div>
       )}
@@ -157,35 +142,32 @@ const NodeForm: React.FC<NodeFormProps> = ({ node, onUpdate }) => {
       {nodeType === 'automation' && (
         <div className="space-y-4 pt-2 border-t">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Action</label>
-            <Select 
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Action</label>
+            <select 
               value={watch('actionId')} 
-              onValueChange={(val) => {
-                setValue('actionId', val);
+              onChange={(e) => {
+                setValue('actionId', e.target.value);
                 handleSubmit(onSubmit)();
               }}
+              className="w-full h-9 px-3 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent"
             >
-              <SelectTrigger size="sm">
-                <SelectValue placeholder="Select an action" />
-              </SelectTrigger>
-              <SelectContent>
-                {automations?.map(a => (
-                  <SelectItem key={a.id} value={a.id}>{a.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <option value="">Select an action</option>
+              {automations?.map(a => (
+                <option key={a.id} value={a.id}>{a.label}</option>
+              ))}
+            </select>
           </div>
 
           {selectedAction && (
             <div className="space-y-3 bg-muted/50 p-2 rounded-md">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase">Parameters</p>
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Parameters</p>
               {selectedAction.params.map(param => (
                 <div key={param} className="space-y-1">
                   <label className="text-[10px] text-muted-foreground">{param}</label>
-                  <Input 
+                  <input 
                     {...register(`params.${param}`)} 
                     placeholder={param} 
-                    className="bg-white h-7 text-xs"
+                    className="w-full bg-white h-7 px-2 text-xs border border-input rounded focus:ring-1 focus:border-primary"
                   />
                 </div>
               ))}
@@ -197,12 +179,12 @@ const NodeForm: React.FC<NodeFormProps> = ({ node, onUpdate }) => {
       {nodeType === 'end' && (
         <div className="space-y-4 pt-2 border-t">
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-muted-foreground uppercase">Message</label>
-            <Input {...register('endMessage')} placeholder="Completion message" size="sm" />
+            <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Message</label>
+            <input {...register('endMessage')} placeholder="Completion message" className="w-full h-9 px-3 text-sm border border-input bg-background rounded-md focus:ring-2 focus:ring-ring focus:border-transparent" />
           </div>
           <div className="flex items-center gap-2 py-2">
-             <input type="checkbox" {...register('summaryFlag')} id="summaryFlag" className="w-4 h-4" />
-             <label htmlFor="summaryFlag" className="text-xs font-medium">Show summary on completion</label>
+             <input type="checkbox" {...register('summaryFlag')} id="summaryFlag" className="w-4 h-4 rounded border-input" />
+             <label htmlFor="summaryFlag" className="text-xs font-medium cursor-pointer select-none">Show summary on completion</label>
           </div>
         </div>
       )}
@@ -210,13 +192,3 @@ const NodeForm: React.FC<NodeFormProps> = ({ node, onUpdate }) => {
   );
 };
 
-const Badge = ({ children, className, variant = 'default' }: any) => (
-  <span className={cn(
-    "px-2 py-0.5 rounded-full font-bold",
-    variant === 'default' && "bg-primary text-primary-foreground",
-    variant === 'secondary' && "bg-secondary text-secondary-foreground",
-    className
-  )}>
-    {children}
-  </span>
-);

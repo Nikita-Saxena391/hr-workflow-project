@@ -1,23 +1,13 @@
 import React from 'react';
 import { Canvas } from './components/workflow/Canvas';
 import { LayoutDashboard, Users, Workflow, HelpCircle } from 'lucide-react';
-import { 
-  AppShell, 
-  AppShellSidebar, 
-  AppShellMain, 
-  MobileSidebarTrigger,
-  SidebarItem,
-  Button,
-  Avatar,
-  AvatarFallback,
-  cn
-} from '@blinkdotnew/ui';
 
 export default function App() {
   return (
-    <AppShell>
-      <AppShellSidebar className="shrink-0">
-        <div className="flex flex-col h-full w-64 bg-background border-r border-border overflow-hidden">
+    <div className="flex h-screen bg-background">
+      {/* Sidebar */}
+      <div className="shrink-0 w-64 bg-background border-r border-border overflow-hidden">
+        <div className="flex flex-col h-full">
           <div className="shrink-0 border-b border-border px-6 h-16 flex items-center gap-3">
             <div className="bg-primary p-1.5 rounded-lg text-primary-foreground shadow-md">
               <Workflow size={20} />
@@ -26,9 +16,18 @@ export default function App() {
           </div>
           
           <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-1">
-            <SidebarItem icon={<LayoutDashboard size={18} />} label="Dashboard" href="#" />
-            <SidebarItem icon={<Workflow size={18} />} label="Flow Designer" href="#" active />
-            <SidebarItem icon={<Users size={18} />} label="HR Members" href="#" />
+            <a href="#" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium hover:bg-accent cursor-pointer active">
+              <LayoutDashboard size={18} />
+              Dashboard
+            </a>
+            <a href="#" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer active">
+              <Workflow size={18} />
+              Flow Designer
+            </a>
+            <a href="#" className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium hover:bg-accent cursor-pointer active">
+              <Users size={18} />
+              HR Members
+            </a>
           </div>
           
           <div className="shrink-0 border-t border-border p-4 bg-slate-50/50">
@@ -40,18 +39,23 @@ export default function App() {
                <p className="text-[10px] text-muted-foreground leading-relaxed">
                  Use the left sidebar to drag and drop nodes. Select any node to configure its logic.
                </p>
-               <Button variant="outline" size="sm" className="w-full text-[10px] h-8">
+               <button className="w-full h-8 px-3 text-xs border border-input bg-background hover:bg-accent rounded-md text-muted-foreground">
                  Documentation
-               </Button>
+               </button>
              </div>
           </div>
         </div>
-      </AppShellSidebar>
+      </div>
       
-      <AppShellMain className="h-screen flex flex-col overflow-hidden">
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
         <header className="h-16 shrink-0 border-b bg-white flex items-center justify-between px-6 z-10 shadow-sm">
           <div className="flex items-center gap-4">
-            <MobileSidebarTrigger className="md:hidden" />
+            <button className="md:hidden p-2 hover:bg-accent rounded-lg">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
             <div>
               <h1 className="text-xl font-bold">New Employee Onboarding</h1>
               <p className="text-xs text-muted-foreground font-medium">Draft Workflow • Last saved 2m ago</p>
@@ -60,25 +64,20 @@ export default function App() {
           
           <div className="flex items-center gap-3">
             <div className="hidden lg:flex items-center -space-x-2 mr-4">
-               <Avatar className="w-8 h-8 border-2 border-white ring-0">
-                 <AvatarFallback className="bg-blue-100 text-blue-700 text-[10px] font-bold">JD</AvatarFallback>
-               </Avatar>
-               <Avatar className="w-8 h-8 border-2 border-white ring-0">
-                 <AvatarFallback className="bg-green-100 text-green-700 text-[10px] font-bold">AS</AvatarFallback>
-               </Avatar>
-               <Avatar className="w-8 h-8 border-2 border-white ring-0">
-                 <AvatarFallback className="bg-muted text-muted-foreground text-[10px]">+3</AvatarFallback>
-               </Avatar>
+               <div className="w-8 h-8 border-2 border-white rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold flex items-center justify-center">JD</div>
+               <div className="w-8 h-8 border-2 border-white rounded-full bg-green-100 text-green-700 text-[10px] font-bold flex items-center justify-center">AS</div>
+               <div className="w-8 h-8 border-2 border-white rounded-full bg-muted text-muted-foreground text-[10px] flex items-center justify-center">+3</div>
             </div>
-            <Button variant="outline" size="sm" className="hidden sm:flex">Save as Draft</Button>
-            <Button size="sm">Publish Flow</Button>
+            <button className="hidden sm:flex px-4 h-9 text-xs border border-input bg-background hover:bg-accent rounded-md text-muted-foreground">Save as Draft</button>
+            <button className="px-4 h-9 bg-primary text-primary-foreground text-sm rounded-md hover:bg-primary/90">Publish Flow</button>
           </div>
         </header>
         
         <main className="flex-1 min-h-0 relative">
           <Canvas />
         </main>
-      </AppShellMain>
-    </AppShell>
+      </div>
+    </div>
   );
 }
+

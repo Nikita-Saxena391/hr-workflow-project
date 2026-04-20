@@ -11,7 +11,6 @@ import { useWorkflow } from '../../hooks/useWorkflow';
 import { StartNode, TaskNode, ApprovalNode, AutomationNode, EndNode } from './nodes/CustomNodes';
 import { NodeType } from '../../lib/workflow/types';
 import { PropertiesPanel } from './PropertiesPanel';
-import { Button, toast } from '@blinkdotnew/ui';
 import { Play, Download, Upload } from 'lucide-react';
 import { SimulationPanel } from './SimulationPanel';
 
@@ -53,7 +52,7 @@ const WorkflowCanvas: React.FC = () => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    toast.success('Workflow exported successfully');
+    alert('Workflow exported successfully');
   }, [nodes, edges]);
 
   const onImport = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,12 +66,12 @@ const WorkflowCanvas: React.FC = () => {
         if (workflow.nodes && workflow.edges) {
           setNodes(workflow.nodes);
           setEdges(workflow.edges);
-          toast.success('Workflow imported successfully');
+          alert('Workflow imported successfully');
         } else {
-          toast.error('Invalid workflow structure');
+          alert('Invalid workflow structure');
         }
       } catch (err) {
-        toast.error('Invalid workflow file');
+        alert('Invalid workflow file');
       }
     };
     reader.readAsText(file);
@@ -129,7 +128,7 @@ const WorkflowCanvas: React.FC = () => {
           <Background color="#cbd5e1" gap={20} />
           <Controls />
           
-          <Panel position="top-right" className="flex gap-2">
+          <Panel position="top-right" className="flex gap-2 p-2 bg-white/80 backdrop-blur-sm rounded-lg border shadow-sm">
             <input
               type="file"
               id="import-workflow"
@@ -137,29 +136,27 @@ const WorkflowCanvas: React.FC = () => {
               accept=".json"
               onChange={onImport}
             />
-            <Button 
-              variant="outline"
+            <button 
               onClick={() => document.getElementById('import-workflow')?.click()}
-              className="gap-2 bg-white"
+              className="px-3 py-1.5 text-xs border border-input bg-white hover:bg-accent rounded-md flex items-center gap-1"
             >
-              <Upload size={16} />
+              <Upload size={14} />
               Import
-            </Button>
-            <Button 
-              variant="outline"
+            </button>
+            <button 
               onClick={onExport}
-              className="gap-2 bg-white"
+              className="px-3 py-1.5 text-xs border border-input bg-white hover:bg-accent rounded-md flex items-center gap-1"
             >
-              <Download size={16} />
+              <Download size={14} />
               Export
-            </Button>
-            <Button 
+            </button>
+            <button 
               onClick={() => setIsSimulating(true)}
-              className="gap-2 shadow-lg"
+              className="px-3 py-1.5 text-xs bg-primary text-primary-foreground hover:bg-primary/90 rounded-md flex items-center gap-1 shadow-md"
             >
-              <Play size={16} fill="currentColor" />
-              Simulate Workflow
-            </Button>
+              <Play size={14} fill="currentColor" />
+              Simulate
+            </button>
           </Panel>
         </ReactFlow>
 
@@ -185,3 +182,4 @@ export const Canvas: React.FC = () => (
     <WorkflowCanvas />
   </ReactFlowProvider>
 );
+

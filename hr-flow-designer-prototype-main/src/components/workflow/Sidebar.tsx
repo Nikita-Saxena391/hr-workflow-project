@@ -1,6 +1,5 @@
 import React from 'react';
 import { Play, ClipboardList, CheckCircle2, Zap, Flag } from 'lucide-react';
-import { cn } from '@blinkdotnew/ui';
 
 const nodeTypes = [
   { type: 'start', label: 'Start Node', icon: <Play size={18} />, color: 'text-green-600 bg-green-50' },
@@ -27,10 +26,10 @@ export const Sidebar: React.FC = () => {
         {nodeTypes.map((node) => (
           <div
             key={node.type}
-            className={cn(
-              "flex items-center gap-3 p-3 rounded-lg border cursor-grab hover:shadow-md transition-all active:cursor-grabbing",
-              node.color
-            )}
+            className={`
+              flex items-center gap-3 p-3 rounded-lg border cursor-grab hover:shadow-md transition-all active:cursor-grabbing
+              ${node.color}
+            `}
             onDragStart={(event) => onDragStart(event, node.type)}
             draggable
           >
@@ -51,3 +50,4 @@ export const Sidebar: React.FC = () => {
     </div>
   );
 };
+

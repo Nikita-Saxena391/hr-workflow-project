@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { WorkflowNode, WorkflowEdge, SimulationStep } from '../../lib/workflow/types';
 import { simulateWorkflow } from '../../lib/workflow/mockApi';
-import { 
-  Button, 
-  Card, 
-  CardHeader, 
-  CardTitle, 
-  CardContent,
-  cn,
-  Progress
-} from '@blinkdotnew/ui';
-import { X, CheckCircle2, AlertCircle, Loader2, Play, RefreshCcw } from 'lucide-react';
+import { X, CheckCircle2, AlertCircle, Loader2, Play, RefreshCw } from 'lucide-react';
 
 interface SimulationPanelProps {
   nodes: WorkflowNode[];
@@ -51,39 +42,41 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({
 
   return (
     <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in zoom-in duration-200">
-      <Card className="w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh]">
-        <CardHeader className="bg-slate-50 border-b flex flex-row items-center justify-between py-4">
+      <div className="w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[80vh] bg-white rounded-xl">
+        <div className="bg-slate-50 border-b flex flex-row items-center justify-between py-4 px-6">
           <div className="flex items-center gap-3">
             <div className="bg-primary/10 p-2 rounded-lg">
-              <Play size={20} className="text-primary" fill="currentColor" />
+              <Play size={20} className="text-primary" />
             </div>
             <div>
-              <CardTitle>Workflow Simulator</CardTitle>
+              <h3 className="font-bold text-lg">Workflow Simulator</h3>
               <p className="text-xs text-muted-foreground mt-0.5">Test your logic and node connections</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full">
+          <button onClick={onClose} className="p-1.5 hover:bg-accent rounded-full transition-colors">
             <X size={20} />
-          </Button>
-        </CardHeader>
+          </button>
+        </div>
 
-        <CardContent className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {isRunning && (
             <div className="space-y-4 py-8 text-center">
               <Loader2 size={40} className="text-primary animate-spin mx-auto" />
               <div className="max-w-xs mx-auto space-y-2">
                 <p className="font-medium">Analyzing Workflow Graph...</p>
-                <Progress value={progress} className="h-2" />
+                <div className="w-full bg-muted rounded-full h-2">
+                  <div className="bg-primary h-2 rounded-full transition-all" style={{width: `${progress}%`}} />
+                </div>
               </div>
             </div>
           )}
 
           {result && (
-            <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-              <div className={cn(
-                "p-4 rounded-xl border-2 flex items-center gap-4 shadow-sm",
-                result.success ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"
-              )}>
+            <div className="space-y-6">
+              <div className={`
+                p-4 rounded-xl border-2 flex items-center gap-4 shadow-sm
+                ${result.success ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}
+              `}>
                 {result.success ? (
                   <div className="bg-green-500 p-2 rounded-full text-white">
                     <CheckCircle2 size={24} />
@@ -94,23 +87,23 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({
                   </div>
                 )}
                 <div className="flex-1">
-                  <h4 className={cn(
-                    "font-bold text-lg",
-                    result.success ? "text-green-800" : "text-red-800"
-                  )}>
+                  <h4 className={`
+                    font-bold text-lg
+                    ${result.success ? "text-green-800" : "text-red-800"}
+                  `}>
                     {result.success ? "Simulation Complete" : "Validation Failed"}
                   </h4>
-                  <p className={cn(
-                    "text-sm",
-                    result.success ? "text-green-600" : "text-red-600"
-                  )}>
+                  <p className={`
+                    text-sm
+                    ${result.success ? "text-green-600" : "text-red-600"}
+                  `}>
                     {result.success ? "All steps reached successfully." : result.error}
                   </p>
                 </div>
                 {!result.success && (
-                  <Button size="sm" onClick={runSimulation} variant="outline" className="border-red-200 hover:bg-red-100">
-                    <RefreshCcw size={14} className="mr-2" /> Retry
-                  </Button>
+                  <button onClick={runSimulation} className="px-3 py-1.5 text-xs border border-red-200 hover:bg-red-100 rounded-md bg-white transition-colors">
+                    <RefreshCw size={14} className="inline mr-1" /> Retry
+                  </button>
                 )}
               </div>
 
@@ -126,13 +119,13 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({
                   {result.steps.length > 0 ? result.steps.map((step, idx) => (
                     <div 
                       key={idx} 
-                      className="relative animate-in slide-in-from-left-2"
-                      style={{ animationDelay: `${idx * 150}ms` }}
+                      className="relative"
+                      style={{ animationDelay: `${idx * 150}ms`, animation: `slide-in-from-left 0.3s ease-out` }}
                     >
-                      <div className={cn(
-                        "absolute -left-[21px] top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm flex items-center justify-center",
-                        step.status === 'success' ? "bg-green-500" : "bg-red-500"
-                      )}>
+                      <div className={`
+                        absolute -left-[21px] top-1 w-4 h-4 rounded-full border-2 border-white shadow-sm flex items-center justify-center
+                        ${step.status === 'success' ? "bg-green-500" : "bg-red-500"}
+                      `}>
                         {step.status === 'success' ? <CheckCircle2 size={10} className="text-white" /> : <X size={10} className="text-white" />}
                       </div>
                       
@@ -149,7 +142,7 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({
                       </div>
                     </div>
                   )) : (
-                     <div className="py-8 text-center text-muted-foreground italic border-2 border-dashed rounded-lg -ml-6">
+                     <div className="py-8 text-center text-muted-foreground italic border-2 border-dashed rounded-lg -ml-6 bg-muted/30">
                        No execution steps recorded.
                      </div>
                   )}
@@ -157,17 +150,18 @@ export const SimulationPanel: React.FC<SimulationPanelProps> = ({
               </div>
             </div>
           )}
-        </CardContent>
+        </div>
 
         <div className="p-4 bg-slate-50 border-t flex justify-end gap-3">
-          <Button variant="outline" onClick={onClose}>Close</Button>
+          <button onClick={onClose} className="px-4 py-2 h-9 text-sm border border-input bg-background hover:bg-accent rounded-md text-muted-foreground">Close</button>
           {!isRunning && (
-            <Button onClick={runSimulation} className="gap-2">
-              <RefreshCcw size={16} /> Re-run Simulation
-            </Button>
+            <button onClick={runSimulation} className="px-4 py-2 h-9 text-sm bg-primary text-primary-foreground hover:bg-primary/90 rounded-md flex items-center gap-2">
+              <RefreshCw size={16} /> Re-run Simulation
+            </button>
           )}
         </div>
-      </Card>
+      </div>
     </div>
   );
 };
+
